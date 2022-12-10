@@ -26,7 +26,26 @@ jar {
 }
 
 application {
-    mainClassName = 'br.edu.utfpr.alunos.bignelli.Main'
+    mainClassName = 'br.edu.utfpr.alunos.bignelli.MainServer'
+}
+
+task mainClient(type: CreateStartScripts) {
+    description "Creates OS specific scripts to call the 'other' entry point"
+    classpath = startScripts.classpath
+    outputDir = startScripts.outputDir
+    mainClassName = 'br.edu.utfpr.alunos.bignelli.MainClient'
+    applicationName = 'other'
+}
+
+distZip {
+    baseName = archivesBaseName
+    classifier = 'app'
+    //include our extra start script
+    //this is a bit weird, I'm open to suggestions on how to do this better
+    into("${baseName}-${version}-${classifier}/bin") {
+        from mainClient
+        fileMode = 0755
+    }
 }
 
 test {
