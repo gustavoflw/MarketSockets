@@ -6,44 +6,49 @@ import java.util.Arrays;
 import java.util.List;
 
 class HDB3Encoder {
-    public static int[] encodeString(String text) {
+    public static int[] encodeString(String text) throws Exception {
+        try{
+            List<Integer> bitList = BitByteUtils.stringToBitArray(text);
+            int[] bitArray = bitList.stream().mapToInt(i -> i).toArray();
+            int totalInversions = 0;
+            boolean invert = false;
 
-        List<Integer> bitList = BitByteUtils.stringToBitArray(text);
-        int[] bitArray = bitList.stream().mapToInt(i -> i).toArray();
-        int totalInversions = 0;
-        boolean invert = false;
+            for (int i = 0; i < bitArray.length; i++) {
+                if (bitArray[i] == 1) {
+                    if (invert) {
+                        bitArray[i] = -1;
+                    }
+                    invert = !invert;
+                    totalInversions++;
+                } else{
+                    if(i+3<bitArray.length-1){
+                        if(bitArray[i] == 0 && bitArray[i + 1] == 0 && bitArray[i + 2] == 0 && bitArray[i + 3] == 0) {
+                            if (totalInversions % 2 == 0) {
+                                if (invert) {
+                                    bitArray[i] = -1;
+                                    bitArray[i + 3] = -1;
+                                } else {
+                                    bitArray[i] = 1;
+                                    bitArray[i + 3] = 1;
+                                }
+                                invert = !invert;
 
-        for (int i = 0; i < bitArray.length; i++) {
-            if (bitArray[i] == 1) {
-                if (invert) {
-                    bitArray[i] = -1;
-                }
-                invert = !invert;
-                totalInversions++;
-            } else{
-                if(i+3<bitArray.length-1){
-                    if(bitArray[i] == 0 && bitArray[i + 1] == 0 && bitArray[i + 2] == 0 && bitArray[i + 3] == 0) {
-                        if (totalInversions % 2 == 0) {
-                            if (invert) {
-                                bitArray[i] = -1;
-                                bitArray[i + 3] = -1;
                             } else {
-                                bitArray[i] = 1;
-                                bitArray[i + 3] = 1;
+                                bitArray[i + 3] = bitArray[i - 1];
                             }
-                            invert = !invert;
 
-                        } else {
-                            bitArray[i + 3] = bitArray[i - 1];
+                            totalInversions = 0;
+                            i = i + 3;
                         }
-
-                        totalInversions = 0;
-                        i = i + 3;
                     }
                 }
             }
+            return bitArray;
+        }catch(Exception ex){
+            throw ex;
         }
-        return bitArray;
+
+
     }
 
     public static void decodeToBitArray(int[] signal){

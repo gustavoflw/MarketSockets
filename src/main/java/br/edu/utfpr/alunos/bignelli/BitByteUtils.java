@@ -1,18 +1,45 @@
 package br.edu.utfpr.alunos.bignelli;
 
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import javax.crypto.*;
 
 public class BitByteUtils {
-    public static ArrayList<Integer> stringToBitArray(String text){
+    public static ArrayList<Integer> stringToBitArray(String text) throws Exception{
         try{
             ArrayList<Integer> result = new ArrayList<Integer> () ;
+            KeyGenerator keygenerator
+                    = KeyGenerator.getInstance("DES");
+            SecretKey myDesKey = keygenerator.generateKey();
 
-            byte byteArray[] = text.getBytes();
+            // Creating object of Cipher
+            Cipher desCipher;
+            desCipher = Cipher.getInstance("DES");
+
+            // Creating byte array to store string
+            byte[] byteArray = text.getBytes("UTF8");
+
             System.out.println(Arrays.toString(byteArray));
+
+
+            // Encrypting text
+            desCipher.init(Cipher.ENCRYPT_MODE, myDesKey);
+            byte[] byteArrayEncrypted = desCipher.doFinal(byteArray);
+
+            System.out.println(Arrays.toString(byteArrayEncrypted));
+            System.out.println(new String(byteArrayEncrypted));
+
+
+            desCipher.init(Cipher.DECRYPT_MODE, myDesKey);
+            byte[] byteArrayDecrypted = desCipher.doFinal(byteArrayEncrypted);
+
+            System.out.println(Arrays.toString(byteArrayDecrypted));
 
 
             for(int i=0;i<text.length();i++) {

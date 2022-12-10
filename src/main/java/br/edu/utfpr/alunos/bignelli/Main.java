@@ -11,10 +11,15 @@ public class Main {
     public static void main(String[] args) {
         //System.out.println(Arrays.toString("".getBytes()));
 
-        int [] encodedSignal = HDB3Encoder.encodeString("Bora rapaziadaaaa!!! Passar Ihaaa");
+        int [] encodedSignal = new int[0];
+        try {
+            encodedSignal = HDB3Encoder.encodeString("Bora rapaziadaaaaPassar Ihaaa");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
 
-        //System.out.println(Arrays.toString(encodedSignal));
+        //System.out.println(Arrays.toString(encodedSignal));++
         HDB3Encoder.decodeSignalArray(encodedSignal);
         //System.out.println(HDB3Encoder.decodeSignalArray(encodedSignal));
 
