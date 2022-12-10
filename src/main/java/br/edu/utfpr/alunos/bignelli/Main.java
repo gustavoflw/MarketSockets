@@ -11,7 +11,7 @@ public class Main {
     public static void main(String[] args) {
         //System.out.println(Arrays.toString("".getBytes()));
 
-        int [] encodedSignal = HDB3Encoder.encodeString("oiê");
+        int [] encodedSignal = HDB3Encoder.encodeString("Bora rapaziadaaaa!!! Passar Ihaaa");
 
 
         //System.out.println(Arrays.toString(encodedSignal));

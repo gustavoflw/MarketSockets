@@ -28,13 +28,11 @@ public class BitByteUtils {
 
     public static ArrayList<Integer> byteToBitArray(int intByte){
         ArrayList<Integer> result = new ArrayList<Integer>();
+        boolean isNegative = intByte <0;
 
-/*      if(intByte<0){
-            result.add(1);
-            intByte = -intByte;
-        }else{
-            result.add(0);
-        }*/
+        if(intByte < 8){
+            intByte = 1-intByte;
+        }
 
         while(intByte > 0){
             if(intByte%2 == 0){
@@ -46,11 +44,24 @@ public class BitByteUtils {
             intByte = intByte/2;
         }
 
+
+
         if(result.size()<8){
             while(result.size() <8){
                 result.add(0);
             }
         }
+
+        if(isNegative){
+            for (int i = 0; i<result.size();i++){
+                if(result.get(i)==0){
+                    result.set(i, 1);
+                }else{
+                    result.set(i, 0);
+                }
+            }
+        }
+
         Collections.reverse(result);
 
         return result;
@@ -58,12 +69,22 @@ public class BitByteUtils {
 
     public static int bitArrayToIntegerByte(int[] bitArray){
         int result = 0;
-
-        for(int i = 0; i < 8; i++){
-            if(bitArray[i]==1){
-                result = result + (int)Math.pow(2,7-i);
+        if(bitArray[0]==0){
+            for(int i = 1; i < 8; i++){
+                if(bitArray[i]==1){
+                    result = result + (int)Math.pow(2,7-i);
+                }
             }
+        }else{
+            for(int i = 1; i < 8; i++){
+                if(bitArray[i]==0){
+                    result = result + (int)Math.pow(2,7-i);
+                }
+            }
+            result = result-1;
+            result = -result;
         }
+
 
         return result;
     }
