@@ -10,40 +10,26 @@ import java.util.Arrays;
 import java.util.Collections;
 import javax.crypto.*;
 
+import static br.edu.utfpr.alunos.bignelli.EncryptionUtils.encrypt;
+
 public class BitByteUtils {
-    public static ArrayList<Integer> stringToBitArray(String text) throws Exception{
+    public static ArrayList<Integer> stringToBitArray(String text,byte[] desKey) throws Exception{
         try{
             ArrayList<Integer> result = new ArrayList<Integer> () ;
-            KeyGenerator keygenerator
-                    = KeyGenerator.getInstance("DES");
-            SecretKey myDesKey = keygenerator.generateKey();
 
-            // Creating object of Cipher
-            Cipher desCipher;
-            desCipher = Cipher.getInstance("DES");
 
             // Creating byte array to store string
             byte[] byteArray = text.getBytes("UTF8");
 
-            System.out.println(Arrays.toString(byteArray));
+            System.out.println("Decrypted"+Arrays.toString(byteArray));
+
+            byte[] byteArrayEncrypted = EncryptionUtils.encrypt(byteArray,desKey);
 
 
-            // Encrypting text
-            desCipher.init(Cipher.ENCRYPT_MODE, myDesKey);
-            byte[] byteArrayEncrypted = desCipher.doFinal(byteArray);
+            System.out.println("Encrypted"+Arrays.toString(byteArrayEncrypted));
 
-            System.out.println(Arrays.toString(byteArrayEncrypted));
-            System.out.println(new String(byteArrayEncrypted));
-
-
-            desCipher.init(Cipher.DECRYPT_MODE, myDesKey);
-            byte[] byteArrayDecrypted = desCipher.doFinal(byteArrayEncrypted);
-
-            System.out.println(Arrays.toString(byteArrayDecrypted));
-
-
-            for(int i=0;i<text.length();i++) {
-                result.addAll(byteToBitArray(byteArray[i]));
+            for(int i=0;i<byteArrayEncrypted.length;i++) {
+                result.addAll(byteToBitArray(byteArrayEncrypted[i]));
             }
             System.out.println(result.toString());
             return result;
@@ -57,7 +43,7 @@ public class BitByteUtils {
         ArrayList<Integer> result = new ArrayList<Integer>();
         boolean isNegative = intByte <0;
 
-        if(intByte < 8){
+        if(intByte < 0){
             intByte = 1-intByte;
         }
 
@@ -115,6 +101,7 @@ public class BitByteUtils {
 
         return result;
     }
-
 }
+
+
 

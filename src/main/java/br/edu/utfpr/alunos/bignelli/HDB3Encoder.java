@@ -6,9 +6,9 @@ import java.util.Arrays;
 import java.util.List;
 
 class HDB3Encoder {
-    public static int[] encodeString(String text) throws Exception {
+    public static int[] encodeString(String text,byte[] desKey) throws Exception {
         try{
-            List<Integer> bitList = BitByteUtils.stringToBitArray(text);
+            List<Integer> bitList = BitByteUtils.stringToBitArray(text,desKey);
             int[] bitArray = bitList.stream().mapToInt(i -> i).toArray();
             int totalInversions = 0;
             boolean invert = false;
@@ -83,25 +83,21 @@ class HDB3Encoder {
         }
     }
 
-    public static String decodeSignalArray(int[] signal) {
+    public static String decodeSignalArray(int[] signal,byte[] desKey) throws Exception {
         ArrayList<Byte> byteArray = new ArrayList<>();
 
 
-
-
-
-
-        System.out.println(Arrays.toString(signal));
+        //System.out.println(Arrays.toString(signal));
 
         decodeToBitArray(signal);
 
-        System.out.println(Arrays.toString(signal));
+        //System.out.println(Arrays.toString(signal));
 
         for (int i = 0; i< signal.length; i=i+8){
             int[] singleByte= Arrays.copyOfRange(signal, i, i+8);
             byte b = (byte)BitByteUtils.bitArrayToIntegerByte(singleByte);
             int intB = b & 0xFF;
-            byteArray.add((byte)intB);
+            byteArray.add(b);
         }
 
         byte[] byteText = new byte[byteArray.size()];
@@ -109,6 +105,10 @@ class HDB3Encoder {
         for(int i = 0; i < byteArray.size(); i++) {
             byteText[i] = byteArray.get(i).byteValue();
         }
+
+        System.out.println(Arrays.toString(byteText));
+
+        byteText = EncryptionUtils.Decrypt(byteText,desKey);
 
         String result = new String(byteText);
         System.out.println(Arrays.toString(byteText));

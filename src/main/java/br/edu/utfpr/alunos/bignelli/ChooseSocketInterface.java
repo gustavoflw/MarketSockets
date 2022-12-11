@@ -39,7 +39,7 @@ public class ChooseSocketInterface extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        var s = e.getActionCommand();
+        String s = e.getActionCommand();
         if (s.equals("Enter")) {
             l.setText(t.getText());
             setIP.accept(t.getText()); // chama a funcao setIp do main
