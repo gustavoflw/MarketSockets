@@ -1,13 +1,11 @@
 package br.edu.utfpr.alunos.bignelli;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.net.InetSocketAddress;
 
 //Inicialmente copiado de https://www.baeldung.com/a-guide-to-java-sockets
 public class MainServer {
 
-    private static InetAddress ip;
+    private static InetSocketAddress ip;
 
     public static void main(String[] args) {
        /*Server server = new Server();
@@ -21,12 +19,8 @@ public class MainServer {
 
     //chamado pela interface de usuario
     private static void setIp(String pos) {
-        try {
-            ip = InetAddress.getByName(pos);
-            System.out.println("Colocado IP: " + ip.toString());
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
+        ip = NetUtils.getSocket(pos);
+        System.out.println("Colocado IP: " + ip.getHostName() + " com porta: " + ip.getPort());
     }
 }
 

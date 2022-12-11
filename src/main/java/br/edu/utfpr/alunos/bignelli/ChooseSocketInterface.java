@@ -16,7 +16,7 @@ public class ChooseSocketInterface extends JFrame implements ActionListener {
 
     public ChooseSocketInterface(Consumer<String> setIP) {
         this.setIP = setIP;
-        f = new JFrame("Escolher IP");
+        f = new JFrame("Escolher porta do IP");
         l = new JLabel(" ");
         b = new JButton("Enter");
         b.addActionListener(this);
@@ -42,7 +42,9 @@ public class ChooseSocketInterface extends JFrame implements ActionListener {
         String s = e.getActionCommand();
         if (s.equals("Enter")) {
             l.setText(t.getText());
-            setIP.accept(t.getText()); // chama a funcao setIp do main
+            if (setIP != null) {
+                setIP.accept(t.getText()); // chama a funcao setIp do main
+            }
             t.setText("");
         }
     }
