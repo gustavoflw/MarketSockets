@@ -13,25 +13,26 @@ import javax.crypto.*;
 import static br.edu.utfpr.alunos.bignelli.EncryptionUtils.encrypt;
 
 public class BitByteUtils {
-    public static ArrayList<Integer> stringToBitArray(String text,byte[] desKey) throws Exception{
+    public static ArrayList<Integer> stringToBitArray(String text,String desKey) throws Exception{
         try{
             ArrayList<Integer> result = new ArrayList<Integer> () ;
 
 
             // Creating byte array to store string
-            byte[] byteArray = text.getBytes("UTF8");
 
-            System.out.println("Decrypted"+Arrays.toString(byteArray));
+            //System.out.println("Decrypted"+text);
 
-            byte[] byteArrayEncrypted = EncryptionUtils.encrypt(byteArray,desKey);
+            byte[] byteArrayEncrypted = EncryptionUtils.encrypt(text,desKey);
 
 
-            System.out.println("Encrypted"+Arrays.toString(byteArrayEncrypted));
+
+
+            //System.out.println("Encrypted"+Arrays.toString(byteArrayEncrypted));
 
             for(int i=0;i<byteArrayEncrypted.length;i++) {
                 result.addAll(byteToBitArray(byteArrayEncrypted[i]));
             }
-            System.out.println(result.toString());
+            //System.out.println(result.toString());
             return result;
         }catch (Exception ex){
             throw ex;

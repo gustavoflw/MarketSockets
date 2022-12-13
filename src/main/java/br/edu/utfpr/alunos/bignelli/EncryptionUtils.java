@@ -1,74 +1,59 @@
 package br.edu.utfpr.alunos.bignelli;
 
-import javax.crypto.SecretKeyFactory;
 import javax.crypto.*;
-import javax.crypto.SecretKeyFactorySpi;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
+import java.security.Key;
 import java.util.Arrays;
+import java.util.Base64;
 
 class EncryptionUtils {
-    public static byte[] encrypt(byte[] byteArray, byte[] byteKey) throws Exception {
+    public static byte[] encrypt(String text, String Key) throws Exception {
 
-        Cipher desCipher;
-        desCipher = Cipher.getInstance("DES");
+        try
+        {
+            System.out.println("string:"+text);
 
-        SecretKey myDesKey = getDesKeyFromStringSecret(byteKey);
-        desCipher.init(Cipher.ENCRYPT_MODE, myDesKey);
+            Key aesKey = getEncryptKeyFromString(Key);
+            Cipher cipher = Cipher.getInstance("AES");
+            cipher.init(Cipher.ENCRYPT_MODE, aesKey);
 
-        byte[] byteArrayEncrypted = desCipher.doFinal(byteArray);
+            byte[] encrypted = cipher.doFinal(text.getBytes("UTF-8"));
+            System.out.println("Encrypted string:"+new String(encrypted,"UTF-8"));
 
-        System.out.println("Encrypted array"+Arrays.toString(byteArrayEncrypted));
-        System.out.println("Encrypted string"+new String(byteArrayEncrypted));
+            byte[] encryptedBase64 = Base64.getEncoder().encode(encrypted);
+            System.out.println("Encrypted string:"+new String(encrypted,"UTF-8"));
 
-/*        desCipher.init(Cipher.DECRYPT_MODE, myDesKey);
-        byte[] byteArrayDecrypted = desCipher.doFinal(byteArrayEncrypted);
-
-        System.out.println(Arrays.toString(byteArrayDecrypted));*/
-
-        return byteArrayEncrypted;
-    }
-
-    public static byte[] Decrypt(byte[] byteArrayEncrypted, byte[] stringKey) throws Exception {
-
-        Cipher desCipher;
-        desCipher = Cipher.getInstance("DES");
-
-        SecretKey myDesKey = getDesKeyFromStringSecret(stringKey);
-
-        desCipher.init(Cipher.DECRYPT_MODE, myDesKey);
-        System.out.println(Arrays.toString(byteArrayEncrypted));
-
-
-        byte[] byteArrayDecrypted = desCipher.doFinal(byteArrayEncrypted);
-
-        System.out.println(Arrays.toString(byteArrayDecrypted));
-
-        return byteArrayDecrypted;
-    }
-
-    public static byte[] generateDesKey() throws NoSuchAlgorithmException, UnsupportedEncodingException {
-        KeyGenerator keygenerator = KeyGenerator.getInstance("DES");
-        SecretKey myDesKey = keygenerator.generateKey();
-        byte [] byteKey = myDesKey.getEncoded();
-
-        return byteKey;
-    }
-
-    public static SecretKey getDesKeyFromStringSecret(byte[] byteKey) throws Exception {
-
-        if(byteKey.length!=8){
-            throw new Exception("Tamanho da chave incompativel");
+            return encryptedBase64;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
         }
 
-        SecretKeyFactory factory = SecretKeyFactory.getInstance("DES");
-        SecretKeySpec keySpec = new SecretKeySpec(byteKey, "DES");
-        SecretKey myDesKey = factory.generateSecret(keySpec);
+        return null;
+    }
 
-        return myDesKey;
+    public static String Decrypt(byte[] textArray, String Key) throws Exception {
+        Key aesKey = getDecryptKeyFromString(Key);
+        Cipher cipher = Cipher.getInstance("AES");
+        cipher.init(Cipher.DECRYPT_MODE, aesKey);
+        byte[] decrypted = cipher.doFinal(Base64.getDecoder().decode(textArray));
+
+        return new String(decrypted, "UTF-8");
+    }
+    public static SecretKey getDecryptKeyFromString(String Key) throws Exception {
+
+        byte[] byteKey =  Base64.getDecoder().decode(Key);
+        SecretKey originalKey = new SecretKeySpec(Arrays.copyOf(byteKey, 16), "AES");
+        return originalKey;
+    }
+
+    public static Key getEncryptKeyFromString(String Key) throws Exception {
+
+        byte[] byteKey =  Base64.getDecoder().decode(Key);
+
+        SecretKey originalKey = new SecretKeySpec(Arrays.copyOf(byteKey, 16), "AES");
+
+        return originalKey;
     }
 }

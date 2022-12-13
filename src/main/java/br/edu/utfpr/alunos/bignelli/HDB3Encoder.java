@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 class HDB3Encoder {
-    public static int[] encodeString(String text,byte[] desKey) throws Exception {
+    public static int[] encodeString(String text,String desKey) throws Exception {
         try{
             List<Integer> bitList = BitByteUtils.stringToBitArray(text,desKey);
             int[] bitArray = bitList.stream().mapToInt(i -> i).toArray();
@@ -83,7 +83,7 @@ class HDB3Encoder {
         }
     }
 
-    public static String decodeSignalArray(int[] signal,byte[] desKey) throws Exception {
+    public static String decodeSignalArray(int[] signal,String desKey) throws Exception {
         ArrayList<Byte> byteArray = new ArrayList<>();
 
 
@@ -106,15 +106,6 @@ class HDB3Encoder {
             byteText[i] = byteArray.get(i).byteValue();
         }
 
-        System.out.println(Arrays.toString(byteText));
-
-        byteText = EncryptionUtils.Decrypt(byteText,desKey);
-
-        String result = new String(byteText);
-        System.out.println(Arrays.toString(byteText));
-        System.out.println("result:"+result);
-
-
-        return result;
+        return EncryptionUtils.Decrypt(byteText,desKey);
     }
 }
