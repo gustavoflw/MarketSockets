@@ -1,14 +1,16 @@
 package br.edu.utfpr.alunos.bignelli;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 //Inicialmente copiado de https://www.baeldung.com/a-guide-to-java-sockets
 public class MainServer {
 
     private static int port;
+    private static ServerInterface servIf;
 
     public static void main(String[] args) {
-        new ServerInterface(MainServer::setIp);
+        servIf = new ServerInterface(MainServer::setIp);
     }
 
     public static void startServer() {
@@ -16,8 +18,11 @@ public class MainServer {
         //setIp("6666");
         try {
             server.start(port);
-            System.out.println("MENSAGEM : " + server.receiveMessage());
-        } catch (IOException e) {
+            ServerClientResult result = server.receiveMessage();
+            String msg = result.getMsg();
+            System.out.println("MENSAGEM : " + msg);
+            servIf.setMsgs(msg, BitByteUtils.binaryRepresentation(msg), Arrays.toString(result.getArray()), result.getArray());
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

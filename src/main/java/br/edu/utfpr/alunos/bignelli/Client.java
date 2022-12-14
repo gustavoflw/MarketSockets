@@ -18,7 +18,7 @@ public class Client {
     }
 
     public void sendMessage(String msg) {
-        String encrypted = EncryptionUtils.encrypt(msg, SecretConstant.KEY);
+        String encrypted = EncryptionUtils.encrypt(msg, ServerClientResult.KEY);
 
         try {
             System.out.println("Mandando criptografada");

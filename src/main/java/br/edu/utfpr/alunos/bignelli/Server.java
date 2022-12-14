@@ -18,15 +18,15 @@ public class Server {
         in = new DataInputStream(clientSocket.getInputStream());
     }
 
-    public String receiveMessage() {
+    public ServerClientResult receiveMessage() {
         try {
             int[] arr = NetUtils.recvIntArray(in);
             String encrypted = HDB3Encoder.decodeSignalArray(arr);
-            return EncryptionUtils.decrypt(encrypted, SecretConstant.KEY);
+            return new ServerClientResult(arr, EncryptionUtils.decrypt(encrypted, ServerClientResult.KEY));
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "";
+        return null;
     }
 
     public void stop() throws IOException {
