@@ -17,15 +17,18 @@ public class Client {
         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
     }
 
-    public void sendMessage(String msg) {
+    public int[] sendMessage(String msg) {
         String encrypted = EncryptionUtils.encrypt(msg, ServerClientResult.KEY);
 
         try {
             System.out.println("Mandando criptografada");
-            NetUtils.sendIntArray(os, HDB3Encoder.encodeString(encrypted));
+            int[] arr = HDB3Encoder.encodeString(encrypted);
+            NetUtils.sendIntArray(os, arr);
+            return arr;
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     public void stopConnection() throws IOException {

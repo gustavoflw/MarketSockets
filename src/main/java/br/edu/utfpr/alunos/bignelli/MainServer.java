@@ -34,6 +34,7 @@ public class MainServer {
             startServer();
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
+            port = 6666; // default
         }
     }
 }

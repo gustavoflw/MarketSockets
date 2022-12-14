@@ -4,9 +4,7 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.plot.XYPlot;
-import org.jfree.data.xy.DefaultXYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
@@ -18,10 +16,10 @@ import java.util.function.Consumer;
 
 public class ServerInterface extends JFrame implements ActionListener {
 
-    private JTextField inputTexto;
-    private JFrame f;
+    protected JTextField inputTexto;
+    protected JFrame f;
     private JButton botaoEnter;
-    private JLabel labelPorta;
+    protected JLabel labelPorta;
     private JLabel labelMsg;
     private JLabel labelMsgBin;
     private JLabel labelAlgoritmo1;
@@ -33,7 +31,7 @@ public class ServerInterface extends JFrame implements ActionListener {
 
     public ServerInterface(Consumer<String> setIP) {
         this.setIP = setIP;
-        f = new JFrame("Escolher porta do IP");
+        f = new JFrame("Escolher porta do IP: " + NetUtils.getLocalIP());
         labelPorta = new JLabel(" ");
         labelMsg = new JLabel("Mensagem");
         labelMsgBin = new JLabel("MensagemBinario");
