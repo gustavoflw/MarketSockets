@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.function.Consumer;
 
-public class ChooseSocketInterface extends JFrame implements ActionListener {
+public class ServerInterface extends JFrame implements ActionListener {
 
     private JTextField t;
     private JFrame f;
@@ -14,7 +14,7 @@ public class ChooseSocketInterface extends JFrame implements ActionListener {
 
     private Consumer<String> setIP;
 
-    public ChooseSocketInterface(Consumer<String> setIP) {
+    public ServerInterface(Consumer<String> setIP) {
         this.setIP = setIP;
         f = new JFrame("Escolher porta do IP");
         l = new JLabel(" ");
@@ -33,7 +33,7 @@ public class ChooseSocketInterface extends JFrame implements ActionListener {
         f.show();
     }
 
-    public ChooseSocketInterface() {
+    public ServerInterface() {
         this(null);
     }
 

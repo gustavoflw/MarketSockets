@@ -10,8 +10,8 @@ public class MainClient {
 
         try {
             client.startConnection("127.0.0.1", 6666);
-            response = client.sendMessage("hello server");
-            System.out.println("Resposta: " + response);
+            client.sendMessage("hello server");
+            //System.out.println("Resposta: " + response);
         } catch (IOException e) {
             e.printStackTrace();
         }

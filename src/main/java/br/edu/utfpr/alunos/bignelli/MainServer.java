@@ -1,26 +1,35 @@
 package br.edu.utfpr.alunos.bignelli;
 
-import java.net.InetSocketAddress;
+import java.io.IOException;
 
 //Inicialmente copiado de https://www.baeldung.com/a-guide-to-java-sockets
 public class MainServer {
 
-    private static InetSocketAddress ip;
+    private static int port;
 
     public static void main(String[] args) {
-       /*Server server = new Server();
+        new ServerInterface(MainServer::setIp);
+    }
+
+    public static void startServer() {
+        Server server = new Server();
+        //setIp("6666");
         try {
-            server.start(6666);
+            server.start(port);
+            System.out.println("MENSAGEM : " + server.receiveMessage());
         } catch (IOException e) {
             e.printStackTrace();
-        }*/
-        new ChooseSocketInterface(MainServer::setIp);
+        }
     }
 
     //chamado pela interface de usuario
     private static void setIp(String pos) {
-        ip = NetUtils.getSocket(pos);
-        System.out.println("Colocado IP: " + ip.getHostName() + " com porta: " + ip.getPort());
+        try {
+            port = Integer.parseInt(pos);
+            startServer();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
     }
 }
 

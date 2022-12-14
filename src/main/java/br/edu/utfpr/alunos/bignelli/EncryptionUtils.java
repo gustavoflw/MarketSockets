@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.Base64;
 
 class EncryptionUtils {
-    public static String encrypt(String text, String Key) throws Exception {
+    public static String encrypt(String text, String Key) {
 
         try
         {

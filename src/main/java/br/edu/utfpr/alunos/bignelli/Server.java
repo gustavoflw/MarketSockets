@@ -1,9 +1,6 @@
 package br.edu.utfpr.alunos.bignelli;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -12,21 +9,24 @@ public class Server {
     private ServerSocket serverSocket;
     private Socket clientSocket;
     private PrintWriter out;
-    private BufferedReader in;
+    private DataInputStream in;
 
     public void start(int port) throws IOException {
         serverSocket = new ServerSocket(port);
-        clientSocket = serverSocket.accept();
+        clientSocket = serverSocket.accept(); //esse metodo bloqueia a thread até algum cliente conectar
         out = new PrintWriter(clientSocket.getOutputStream(), true);
-        in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-        String greeting = in.readLine();
+        in = new DataInputStream(clientSocket.getInputStream());
+    }
 
-        if ("hello server".equals(greeting)) {
-            out.println("hello client");
+    public String receiveMessage() {
+        try {
+            int[] arr = NetUtils.recvIntArray(in);
+            String encrypted = HDB3Encoder.decodeSignalArray(arr);
+            return EncryptionUtils.decrypt(encrypted, SecretConstant.KEY);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        else {
-            out.println("unrecognised greeting");
-        }
+        return "";
     }
 
     public void stop() throws IOException {

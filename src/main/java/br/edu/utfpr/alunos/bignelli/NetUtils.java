@@ -1,5 +1,8 @@
 package br.edu.utfpr.alunos.bignelli;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.*;
 
 public class NetUtils {
@@ -26,5 +29,22 @@ public class NetUtils {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static void sendIntArray(DataOutputStream os, int[] data) throws IOException {
+        os.writeInt(data.length);
+        for (int valor : data) {
+            os.writeInt(valor);
+        }
+    }
+
+    public static int[] recvIntArray(DataInputStream is) throws IOException {
+        int len = is.readInt();
+        int[] arr = new int[len];
+
+        for (int i = 0; i < len; i++) {
+            arr[i] = is.readInt();
+        }
+        return arr;
     }
 }
