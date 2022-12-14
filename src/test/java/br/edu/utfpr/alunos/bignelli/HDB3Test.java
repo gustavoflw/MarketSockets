@@ -30,10 +30,13 @@ public class HDB3Test {
     @Test
     public void testarEncodeDecode() throws Exception {
 
+        String encyptedText = EncryptionUtils.encrypt(TEXTO,desKey);
 
-        int [] encodedSignal = HDB3Encoder.encodeString(TEXTO, desKey);
+        int [] encodedSignal = HDB3Encoder.encodeString(encyptedText);
 
-        assertEquals(HDB3Encoder.decodeSignalArray(encodedSignal, desKey), TEXTO);
+        encyptedText = HDB3Encoder.decodeSignalArray(encodedSignal);
+        String decyptedText = EncryptionUtils.decrypt(encyptedText,desKey);
+        assertEquals(decyptedText, TEXTO);
     }
 
     @Test

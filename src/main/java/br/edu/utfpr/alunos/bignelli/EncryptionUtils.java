@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.Base64;
 
 class EncryptionUtils {
-    public static byte[] encrypt(String text, String Key) throws Exception {
+    public static String encrypt(String text, String Key) throws Exception {
 
         try
         {
@@ -21,9 +21,11 @@ class EncryptionUtils {
             System.out.println("Encrypted string:"+new String(encrypted,"UTF-8"));
 
             byte[] encryptedBase64 = Base64.getEncoder().encode(encrypted);
-            System.out.println("Encrypted string:"+new String(encrypted,"UTF-8"));
 
-            return encryptedBase64;
+            String encryptedBase64String = new String(encryptedBase64);
+            System.out.println("Encrypted string:"+encryptedBase64String);
+
+            return encryptedBase64String ;
         }
         catch(Exception e)
         {
@@ -33,13 +35,20 @@ class EncryptionUtils {
         return null;
     }
 
-    public static String Decrypt(byte[] textArray, String Key) throws Exception {
+    public static String decrypt(String text, String Key) throws Exception {
+        System.out.println("Encrypted string:"+text);
+
         Key aesKey = getDecryptKeyFromString(Key);
         Cipher cipher = Cipher.getInstance("AES");
         cipher.init(Cipher.DECRYPT_MODE, aesKey);
-        byte[] decrypted = cipher.doFinal(Base64.getDecoder().decode(textArray));
 
-        return new String(decrypted, "UTF-8");
+        byte[] decrypted = cipher.doFinal(Base64.getDecoder().decode(text.getBytes()));
+
+        String decryptedText = new String(decrypted);
+        System.out.println("Decrypted string:"+decryptedText);
+
+
+        return decryptedText;
     }
     public static SecretKey getDecryptKeyFromString(String Key) throws Exception {
 

@@ -6,9 +6,9 @@ import java.util.Arrays;
 import java.util.List;
 
 class HDB3Encoder {
-    public static int[] encodeString(String text,String desKey) throws Exception {
+    public static int[] encodeString(String text) throws Exception {
         try{
-            List<Integer> bitList = BitByteUtils.stringToBitArray(text,desKey);
+            List<Integer> bitList = BitByteUtils.stringToBitArray(text);
             int[] bitArray = bitList.stream().mapToInt(i -> i).toArray();
             int totalInversions = 0;
             boolean invert = false;
@@ -83,15 +83,10 @@ class HDB3Encoder {
         }
     }
 
-    public static String decodeSignalArray(int[] signal,String desKey) throws Exception {
+    public static String decodeSignalArray(int[] signal) throws Exception {
         ArrayList<Byte> byteArray = new ArrayList<>();
 
-
-        //System.out.println(Arrays.toString(signal));
-
         decodeToBitArray(signal);
-
-        //System.out.println(Arrays.toString(signal));
 
         for (int i = 0; i< signal.length; i=i+8){
             int[] singleByte= Arrays.copyOfRange(signal, i, i+8);
@@ -106,6 +101,6 @@ class HDB3Encoder {
             byteText[i] = byteArray.get(i).byteValue();
         }
 
-        return EncryptionUtils.Decrypt(byteText,desKey);
+        return new String(byteText);
     }
 }
